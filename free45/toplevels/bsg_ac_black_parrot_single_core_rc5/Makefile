@@ -39,7 +39,7 @@ bsg_packaging_commit :=master
 
 black_parrot_dir     :=$(THIS_DIR)/black-parrot
 black_parrot_url     :=$(GITHUB)black-parrot/black-parrot
-black_parrot_commit  :=tapeout_bp_rc5
+black_parrot_commit  :=tapeout_bp_rc5_free45
 
 all_repos = $(subst _url,.repo,$(filter %_url,$(.VARIABLES)))
 
