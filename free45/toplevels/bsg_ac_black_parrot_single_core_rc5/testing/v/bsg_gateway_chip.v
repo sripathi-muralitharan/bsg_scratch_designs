@@ -10,9 +10,8 @@ import bsg_chip_pkg::*;
 
 import bp_common_pkg::*;
 import bp_common_aviary_pkg::*;
-import bp_common_rv64_pkg::*;
 import bp_be_pkg::*;
-import bp_cce_pkg::*;
+import bp_fe_pkg::*;
 import bp_me_pkg::*;
 import bsg_noc_pkg::*;
 import bsg_wormhole_router_pkg::*;
@@ -37,7 +36,7 @@ import bsg_wormhole_router_pkg::*;
   //
 
   logic blackparrot_reset;
-  bsg_nonsynth_reset_gen #(.num_clocks_p(1),.reset_cycles_lo_p(10),.reset_cycles_hi_p(5))
+  bsg_nonsynth_reset_gen #(.num_clocks_p(1),.reset_cycles_lo_p(10),.reset_cycles_hi_p(10))
     blackparrot_reset_gen
       (.clk_i(blackparrot_clk)
       ,.async_reset_o(blackparrot_reset)
@@ -106,6 +105,7 @@ import bsg_wormhole_router_pkg::*;
   logic mem_resp_data_v_li, mem_resp_data_yumi_lo;
 
   bsg_chip
+   #(.bp_params_p(bp_params_p))
    DUT
     (.clk_i(blackparrot_clk)
      ,.reset_i(blackparrot_reset)
@@ -147,23 +147,24 @@ import bsg_wormhole_router_pkg::*;
    #(.bp_params_p(bp_params_p)
      ,.in_data_width_p(dword_width_p)
      ,.out_data_width_p(cce_block_width_p)
+     ,.payload_width_p(cce_mem_payload_width_lp)
      ,.payload_mask_p(mem_cmd_payload_mask_gp)
      )
    burst2lite
     (.clk_i(blackparrot_clk)
      ,.reset_i(blackparrot_reset)
 
-     ,.mem_header_i(mem_cmd_header_lo)
-     ,.mem_header_v_i(mem_cmd_header_v_lo)
-     ,.mem_header_ready_and_o(mem_cmd_header_ready_li)
+     ,.in_msg_header_i(mem_cmd_header_lo)
+     ,.in_msg_header_v_i(mem_cmd_header_v_lo)
+     ,.in_msg_header_ready_and_o(mem_cmd_header_ready_li)
 
-     ,.mem_data_i(mem_cmd_data_lo)
-     ,.mem_data_v_i(mem_cmd_data_v_lo)
-     ,.mem_data_ready_and_o(mem_cmd_data_ready_li)
+     ,.in_msg_data_i(mem_cmd_data_lo)
+     ,.in_msg_data_v_i(mem_cmd_data_v_lo)
+     ,.in_msg_data_ready_and_o(mem_cmd_data_ready_li)
 
-     ,.mem_o(proc_mem_cmd_lo)
-     ,.mem_v_o(proc_mem_cmd_v_lo)
-     ,.mem_ready_and_i(proc_mem_cmd_ready_li)
+     ,.out_msg_o(proc_mem_cmd_lo)
+     ,.out_msg_v_o(proc_mem_cmd_v_lo)
+     ,.out_msg_ready_and_i(proc_mem_cmd_ready_li)
      );
 
   logic proc_mem_resp_ready_lo;
@@ -172,23 +173,24 @@ import bsg_wormhole_router_pkg::*;
    #(.bp_params_p(bp_params_p)
      ,.in_data_width_p(cce_block_width_p)
      ,.out_data_width_p(dword_width_p)
+     ,.payload_width_p(cce_mem_payload_width_lp)
      ,.payload_mask_p(mem_resp_payload_mask_gp)
      )
    lite2burst
     (.clk_i(blackparrot_clk)
      ,.reset_i(blackparrot_reset)
 
-     ,.mem_i(proc_mem_resp_li)
-     ,.mem_v_i(proc_mem_resp_v_li)
-     ,.mem_ready_and_o(proc_mem_resp_ready_lo)
+     ,.in_msg_i(proc_mem_resp_li)
+     ,.in_msg_v_i(proc_mem_resp_v_li)
+     ,.in_msg_ready_and_o(proc_mem_resp_ready_lo)
 
-     ,.mem_header_o(mem_resp_header_li)
-     ,.mem_header_v_o(mem_resp_header_v_li)
-     ,.mem_header_ready_and_i(mem_resp_header_yumi_lo)
+     ,.out_msg_header_o(mem_resp_header_li)
+     ,.out_msg_header_v_o(mem_resp_header_v_li)
+     ,.out_msg_header_ready_and_i(mem_resp_header_yumi_lo)
 
-     ,.mem_data_o(mem_resp_data_li)
-     ,.mem_data_v_o(mem_resp_data_v_li)
-     ,.mem_data_ready_and_i(mem_resp_data_yumi_lo)
+     ,.out_msg_data_o(mem_resp_data_li)
+     ,.out_msg_data_v_o(mem_resp_data_v_li)
+     ,.out_msg_data_ready_and_i(mem_resp_data_yumi_lo)
      );
 
   bp_mem
@@ -264,25 +266,7 @@ import bsg_wormhole_router_pkg::*;
      ,.done_o()
     );
 
-  // Binding for rtl netlists
-  // bind bp_be_top
-  //   bp_nonsynth_watchdog
-  //   #(.bp_params_p(bp_params_p)
-  //    ,.timeout_cycles_p(100000)
-  //    ,.heartbeat_instr_p(100000)
-  //    )
-  //    watchdog
-  //    (.clk_i(be.clk_i)
-  //    ,.reset_i(be.reset_i)
-
-  //    ,.freeze_i(calculator.pipe_sys.csr.cfg_bus_cast_i.freeze)
-  //    ,.mhartid_i(calculator.pipe_sys.csr.cfg_bus_cast_i.core_id)
-
-  //    ,.npc_i(director.npc_r)
-  //    ,.instret_i(calculator.commit_pkt.instret)
-  //    );
-
-  localparam num_cycles_lp = 5000;
+  localparam num_cycles_lp = 100000;
   logic [`BSG_SAFE_CLOG2(num_cycles_lp)-1:0] watchdog_cnt;
   bsg_counter_clear_up
    #(.max_val_p(num_cycles_lp), .init_val_p(0))
@@ -301,23 +285,5 @@ import bsg_wormhole_router_pkg::*;
       $finish;
     end
    end
-
-  // Binding for post-synth netlists
-  // bind bsg_chip_bp_be_top_02_0
-  //  bp_nonsynth_watchdog
-  //  #(.bp_params_p(bp_params_e'(2))
-  //   ,.timeout_cycles_p(100000)
-  //   ,.heartbeat_instr_p(100000)
-  //   )
-  //   watchdog
-  //   (.clk_i(clk_i)
-  //   ,.reset_i(reset_i)
-
-  //   ,.freeze_i(calculator.pipe_sys.csr.cfg_bus_i[25])
-  //   ,.mhartid_i(calculator.pipe_sys.csr.cfg_bus_i[24])
-
-  //   ,.npc_i(director.npc_r)
-  //   ,.instret_i(calculator.commit_pkt_o[121])
-  //   );
 
 endmodule

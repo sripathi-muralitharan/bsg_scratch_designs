@@ -17,8 +17,7 @@ set TESTING_INCLUDE_PATHS [join "
   $blackparrot_dir/bp_common/src/include
   $blackparrot_dir/bp_fe/src/include
   $blackparrot_dir/bp_be/src/include
-  $blackparrot_dir/bp_be/src/include/bp_be_dcache/
-  $blackparrot_dir/bp_me/src/include/v
+  $blackparrot_dir/bp_me/src/include
   $basejump_stl_dir/testing/bsg_dmc/lpddr_verilog_model/
   $bsg_packaging_dir/$bsg_package/pinouts/$bsg_pinout/common/verilog
 "]

@@ -25,15 +25,9 @@ set SVERILOG_SOURCE_FILES [join "
   $basejump_stl_dir/bsg_noc/bsg_wormhole_router_pkg.v
   $bp_common_dir/src/include/bp_common_pkg.sv
   $bp_common_dir/src/include/bp_common_aviary_pkg.sv
-  $bp_fe_dir/src/include/bp_fe_icache_pkg.sv
   $bp_fe_dir/src/include/bp_fe_pkg.sv
-  $bp_common_dir/src/include/bp_common_rv64_pkg.sv
   $bp_be_dir/src/include/bp_be_pkg.sv
-  $bp_be_dir/src/include/bp_be_dcache_pkg.sv
-  $bp_be_dir/src/include/bp_be_hardfloat_pkg.sv
-  $bp_me_dir/src/include/v/bp_me_pkg.sv
-  $bp_me_dir/src/include/v/bp_cce_pkg.sv
-  $bp_common_dir/src/include/bp_common_cfg_link_pkg.sv
+  $bp_me_dir/src/include/bp_me_pkg.sv
   $basejump_stl_dir/bsg_cache/bsg_cache.v
   $basejump_stl_dir/bsg_cache/bsg_cache_dma.v
   $basejump_stl_dir/bsg_cache/bsg_cache_miss.v
@@ -161,6 +155,7 @@ set SVERILOG_SOURCE_FILES [join "
   $bp_common_dir/src/v/bp_tlb.sv
   $bp_common_dir/src/v/bsg_fifo_1r1w_rolly.sv
   $bp_common_dir/src/v/bsg_bus_pack.sv
+  $bp_common_dir/src/v/bp_mmu.sv
   $bp_be_dir/src/v/bp_be_top.sv
   $bp_be_dir/src/v/bp_be_calculator/bp_be_bypass.sv
   $bp_be_dir/src/v/bp_be_calculator/bp_be_calculator_top.sv
@@ -230,8 +225,12 @@ set SVERILOG_SOURCE_FILES [join "
   $bp_me_dir/src/v/wormhole/bp_me_wormhole_packet_encode_lce_resp.sv
   $bp_me_dir/src/v/wormhole/bp_me_wormhole_packet_encode_mem_cmd.sv
   $bp_me_dir/src/v/wormhole/bp_me_wormhole_packet_encode_mem_resp.sv
+  $bp_me_dir/src/v/wormhole/bp_stream_to_lite.sv
+  $bp_me_dir/src/v/wormhole/bp_lite_to_stream.sv
   $bp_me_dir/src/v/wormhole/bp_burst_to_lite.sv
   $bp_me_dir/src/v/wormhole/bp_lite_to_burst.sv
+  $bp_me_dir/src/v/wormhole/bp_stream_pump_in.sv
+  $bp_me_dir/src/v/wormhole/bp_stream_pump_out.sv
   $bp_top_dir/src/v/bsg_async_noc_link.sv
   $bp_top_dir/src/v/bp_cacc_complex.sv
   $bp_top_dir/src/v/bp_cfg.sv

@@ -25,15 +25,11 @@ set TESTING_SOURCE_FILES [join "
   $basejump_stl_dir/bsg_tag/bsg_tag_pkg.v
   $basejump_stl_dir/bsg_noc/bsg_noc_pkg.v
   $basejump_stl_dir/bsg_noc/bsg_wormhole_router_pkg.v
-  $bp_common_dir/src/include/bp_common_rv64_pkg.sv
-  $bp_common_dir/src/include/bp_common_cfg_link_pkg.sv
   $bp_common_dir/src/include/bp_common_pkg.sv
   $bp_common_dir/src/include/bp_common_aviary_pkg.sv
-  $bp_me_dir/src/include/v/bp_me_pkg.sv
-  $bp_me_dir/src/include/v/bp_cce_pkg.sv
+  $bp_me_dir/src/include/bp_me_pkg.sv
   $bp_me_dir/test/common/bp_dramsim3_pkg.sv
   $bp_be_dir/src/include/bp_be_pkg.sv
-  $bp_be_dir/src/include/bp_be_dcache_pkg.sv
 
   $basejump_stl_dir/bsg_async/bsg_async_fifo.v
   $basejump_stl_dir/bsg_async/bsg_async_ptr_gray.v
@@ -93,7 +89,6 @@ set TESTING_SOURCE_FILES [join "
   $bp_me_dir/test/common/bp_mem.sv
   $bp_me_dir/test/common/bp_mem_to_dram.sv
   $bp_top_dir/test/common/bp_nonsynth_host.sv
-  $bp_top_dir/test/common/bp_nonsynth_watchdog.sv
   $bp_top_dir/test/common/bp_monitor.cpp
   $bp_top_dir/test/common/bp_nonsynth_nbf_loader.sv
   $bp_common_dir/src/v/bsg_bus_pack.sv
