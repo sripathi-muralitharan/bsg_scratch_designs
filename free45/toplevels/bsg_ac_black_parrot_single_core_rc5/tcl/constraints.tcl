@@ -69,10 +69,10 @@
   uniquify -force
   ungroup -flatten [get_cells -hier]
 
-#  current_design *pipe_mem*
-#  create_clock -period ${core_clk_period_ns} [get_ports "clk_i"]
-#  set_optimize_registers true -check_design
-#  uniquify -force
-#  ungroup -flatten [get_cells -hier]
+  current_design *pipe_mem*
+  create_clock -period ${core_clk_period_ns} [get_ports "clk_i"]
+  set_optimize_registers true -check_design
+  uniquify -force
+  ungroup -flatten [get_cells -hier]
 
   current_design bsg_chip
